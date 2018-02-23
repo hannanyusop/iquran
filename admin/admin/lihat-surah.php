@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 
-<? include_once ('include/logged-header.php'); ?>
-<? $title = "SURAH:"; ?>
+<?php include_once ('include/logged-header.php'); ?>
+<?php $title = "SURAH:"; ?>
 
 <?php
 //check if surah exist

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 
-<? include_once ('include/logged-header.php'); ?>
+<?php include_once ('include/logged-header.php'); ?>
 
 <body>
 	<!-- WRAPPER -->
