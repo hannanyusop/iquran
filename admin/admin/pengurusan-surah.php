@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 
-<? include_once ('include/logged-header.php'); ?>
-<? $title = "Senarai Surah"; ?>
-<? $tempat_turun = [
+<?php include_once ('include/logged-header.php'); ?>
+<?php $title = "Senarai Surah"; ?>
+<?php $tempat_turun = [
         'Semua' => 'MEKKAH/MADINAH',
         'Mekkah' => 'MEKKAH',
         'Madinah' => 'MADINAH'
