@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-
+<meta charset="utf-8">
 <?php include_once ('include/logged-header.php'); ?>
 <?php $title = "Senarai Surah"; ?>
 <?php $tempat_turun = [

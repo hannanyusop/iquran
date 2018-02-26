@@ -1,1 +1,1 @@
-<?= '<script>window.location="dashboard.php"</script>'; ?>
+<?php '<script>window.location="dashboard.php"</script>'; ?>

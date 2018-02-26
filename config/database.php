@@ -3,6 +3,7 @@
     $db =mysqli_connect("localhost","root","","quran");
     mysqli_set_charset($db,"utf8");
 
+
 if (mysqli_connect_errno()) {
 
         $_SESSION['error'] =

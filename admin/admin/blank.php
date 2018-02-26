@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 
-<? include_once ('include/logged-header.php'); ?>
-<? $title = "KOSONG"; ?>
+<?php include_once ('include/logged-header.php'); ?>
+<?php $title = "KOSONG"; ?>
 
 <body>
 <!-- WRAPPER -->
