@@ -4,7 +4,46 @@
 
 <head>
     <?php include_once ('config/database.php'); ?>
-    <?php $title = "SURAH:"; ?>
+    <?php $title = "SURAH:".$_GET['surah']; ?>
+
+    <?php
+    //check if surah exist
+    if(isset($_GET['surah'])){
+
+
+        $surah_name = "TIADA";
+        $check_surah = "SELECT * FROM DaftarSurat WHERE surat_malaysia='$_GET[surah]'";
+        $fetch_surah = mysqli_query($db,$check_surah);
+
+        if ($fetch_surah) {
+
+            $data = mysqli_fetch_assoc($fetch_surah);
+
+            //get total page
+            $page =mysqli_num_rows(mysqli_query($db,"SELECT * FROM ArabicQuran WHERE surat='$data[index]'"));
+            //divide by 12 because 2 pages contain 12 ayat
+
+            $ttl_page = $page/12;
+
+            //if float, we need add one additional page for surah.
+            if(is_float ( $ttl_page)){
+                $ttl_page+=1;
+            }
+
+            $last_page = (int)$ttl_page;
+//            print_r($last_page);
+//            die();
+            $surah_name = $data['surat_arab'].'('.$data['surat_malaysia'].')';
+        }else{
+
+            echo '<script>alert("Surah tidak wujud!");window.location="muka-depan.php"</script>';
+        }
+
+    }else{
+        echo '<script>alert("Sila Pilih Surah!");window.location="muka-depan.php"</script>';
+    }
+
+    ?>
 
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
@@ -82,73 +121,64 @@
         <div class="bb-custom-wrapper" id="book-1">
             <div class="bb-bookblock">
 <?php $pageA = 1; $pageB = 2; $limitPageA = 0; $limitPageB = 6; ?>
-<?php while($limitPageB < 114 ): ?>
+<?php while($limitPageB < $last_page ): ?>
                 <div class="bb-item"> <!--page 1~2:start-->
 
                     <div class="bb-custom-side"> <!--page 1:start-->
-                        <div class="content-wrapper">
+                        <div class="content-wrapper ps-container">
                             <div class="container">
 
-                                <div class="content-title title-1"><h2>Senarai Surah (m/s: <?php echo $pageA; ?>)</h2></div>
-
-                                <ul class="book-timeline">
-                                    <?php
-
-                                        $get_surah = mysqli_query($db,"SELECT * FROM DaftarSurat LIMIT 6 OFFSET ".$limitPageA);
+                                <div class="content-title title-1"><h2><?php echo $title."(".$pageA.")"; ?></h2></div>
 
 
-                                        while ($row = mysqli_fetch_assoc($get_surah))
-                                        {
-                                            ?>
-                                            <li>
-                                                <a  href="baca.php?surah=<?php echo $row['surat_malaysia']; ?>" class="time-data"><i class="fa fa-play"></i></a>
-                                                <div class="time-dot"></div>
-                                                <div class="time-block">
-                                                    <h4><?= $row['surat_arab'].'('.$row['surat_malaysia'].')'; ?></h4>
-                                                    <h5>Jumlah Ayat:<?= $row['jumlah_ayat'] ?></h5>
-                                                    <h5><?php echo $row['index']."-".$row['tempat_turun']; ?></h5>
-                                                </div>
-                                            </li>
-                                    <?php
-                                        }
+                                <?php
+                                $get_ayat = mysqli_query($db,"SELECT a.text as ayatArab,b.text as ayatMalay FROM ArabicQuran as a LEFT JOIN MalaysianQuran as b on a.surat = b.surat WHERE a.surat='$data[index]' LIMIT 6 OFFSET ".$limitPageA);
+
+
+                                while ($row = mysqli_fetch_assoc($get_ayat))
+                                {
                                     ?>
-                                </ul>
+                                    <p class="some-intro">
+                                    <h4 style="color: black;font-size: 20px"><?php echo $row['ayatArab']; ?></h4>
+                                    <small><?php echo $row['ayatMalay']; ?></small>
+                                    </p>
+                                    <audio controls>
+                                        <source src='track/1/surah_al_fatihah.mp3' type='audio/mp3'>
+                                        Your browser does not support the audio tag.
+                                    </audio>
 
-                            </div><!--container 1-->
-                        </div><!--content wrapper 1-->
+                                    <div class="content-title title-3"></div>
+                                    <?php
+                                }
+                                ?>
+
+                            </div>
+                            <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 560px; display: none;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 717px; display: inherit;"><div class="ps-scrollbar-y" style="top: 0px; height: 517px;"></div></div></div>
                     </div><!--bb-custom-side page 1:end-->
 
                     <div class="bb-custom-side">  <!--page 2:start-->
-                        <div class="content-wrapper">
+                        <div class="content-wrapper ps-container">
                             <div class="container">
 
-                                <div class="content-title title-1"><h2><h2>Senarai Surah (m/s: <?php echo $pageB; ?>)</h2></div>
-
-                                <ul class="book-timeline">
-                                    <?php
-
-                                    $get_surah = mysqli_query($db,"SELECT * FROM DaftarSurat LIMIT 6 OFFSET ".$limitPageB);
+                                <?php
+                                $get_ayat = mysqli_query($db,"SELECT a.text as ayatArab,b.text as ayatMalay FROM ArabicQuran as a LEFT JOIN MalaysianQuran as b on a.surat = b.surat WHERE a.surat='$data[index]' LIMIT 6 OFFSET ".$limitPageB);
 
 
-                                    while ($row = mysqli_fetch_assoc($get_surah))
-                                    {
-                                        ?>
-                                        <li>
-                                            <a  href="baca.php?surah=<?php echo $row['surat_malaysia']; ?>" class="time-data"><i class="fa fa-play"></i></a>
-                                            <div class="time-dot"></div>
-                                            <div class="time-block">
-                                                <h4><?php echo $row['surat_arab'].'('.$row['surat_malaysia'].')'; ?></h4>
-                                                <h5>Jumlah Ayat:<?= $row['jumlah_ayat'] ?></h5>
-                                                <h5><?php echo $row['index']."-".$row['tempat_turun']; ?></h5>
-                                            </div>
-                                        </li>
-                                        <?php
-                                    }
+                                while ($row = mysqli_fetch_assoc($get_ayat))
+                                {
                                     ?>
-                                </ul>
+                                    <p class="some-intro">
+                                    <h4 style="color: black;font-size: 20px"><?php echo $row['ayatArab']; ?></h4>
+                                    <small><?php echo $row['ayatMalay']; ?></small>
+                                    </p>
+                                    <button><i class="fa fa-play">Play</i> </button>
+                                    <div class="content-title title-3"></div>
+                                    <?php
+                                }
+                                ?>
 
                             </div><!--container 2-->
-                        </div><!--content wrapper 2-->
+                            <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 560px; display: none;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 717px; display: inherit;"><div class="ps-scrollbar-y" style="top: 0px; height: 517px;"></div></div></div>
                     </div><!--bb-custom side page 2:end-->
 
                 </div><!--bb-item-page 1~2:end-->

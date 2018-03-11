@@ -10,7 +10,7 @@ if(isset($_GET['surah'])){
 
 
     $surah_name = "TIADA";
-    $check_surah = 'SELECT * FROM DaftarSurat';
+    $check_surah = "SELECT * FROM DaftarSurat WHERE surat_malaysia='$_GET[surah]'";
     $fetch_surah = mysqli_query($db,$check_surah);
 
     if ($fetch_surah) {
@@ -79,6 +79,8 @@ if(isset($_GET['surah'])){
                                     <tr>
                                         <th>No. Ayat</th>
                                         <th>Ayat</th>
+                                        <th>Audio</th>
+                                        <th>Kemaskini</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -91,6 +93,8 @@ if(isset($_GET['surah'])){
                                         <tr>
                                             <td><?= $row['ayat'] ?></td>
                                             <td><?= $row['text'] ?></td>
+                                            <td><button class="btn btn-xs btn-info"><i class="fa fa-play">Main</i> </button></td>
+                                            <td><a href="kemaskini-surah.php?surah=<?php echo $_GET['surah']; ?>&ayat=<?php echo $row['index']; ?>"><i class="fa fa-edit">Kemaskini</i> </a></td>
                                         </tr>
                                     <?php } ?>
                                     </tbody>
