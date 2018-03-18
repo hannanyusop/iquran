@@ -24,7 +24,9 @@ if(isset($_POST['surah'])){
         {
             //inserting data to DB
 
-            if (mysqli_query($db, "INSERT INTO track(surat, ayat) VALUES ($_POST[surah], $_POST[ayat])")) {
+            $file_name = $_FILES['track']['tmp_name'];
+            $sql = "UPDATE texts SET track =  '$file_name' WHERE ayat_num = $_POST[ayat] AND surah_id = $_POST[surah]";
+            if (mysqli_query($db, $sql)) {
                 echo "<script>alert('Audio telah dimasukan.');window.location='kemaskini-surah.php?surah=$_POST[surah]&ayat=$_POST[ayat]'</script>";
             } else {
                 echo "<script>alert('Gagal memasukan data ke pangkalan data!');window.location='kemaskini-surah.php?surah=$_POST[surah]&ayat=$_POST[ayat]'</script>";

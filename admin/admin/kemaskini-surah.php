@@ -52,8 +52,7 @@ if(isset($_GET['surah']) && isset($_GET['ayat'])){
                 </div>
                 <div class="col-md-6">
                     <div class="panel-content">
-                        <form id="basic-form" method="post">
-
+                        <form  method="POST" action="kemaskini-surah.php?<?php echo "surah=".$_GET['surah']."&ayat=".$_GET['ayat'] ?>">
                             <h2 class="heading"><i class="fa fa-square"></i>Arab</h2>
                                 <div class="form-group">
                                     <textarea class="form-control" rows="5" cols="30" disabled><?php echo $data['arabic']; ?></textarea>
@@ -61,7 +60,9 @@ if(isset($_GET['surah']) && isset($_GET['ayat'])){
                             <br>
                             <h2 class="heading"><i class="fa fa-square"></i>Terjemahan</h2>
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="5" name="mal_quran" cols="30" required><?php echo $data['malay']; ?></textarea>
+                                    <input type="hidden" name="surah" value="<?php echo $_GET['surah']; ?>">
+                                    <input type="hidden" name="ayat" value="<?php echo $_GET['ayat']; ?>">
+                                    <textarea class="form-control" rows="5" name="malay" cols="30" required><?php echo $data['malay']; ?></textarea>
                                 </div>
                             <h2 class="heading"><i class="fa fa-square"></i>Audio</h2>
                             <div class="form-group">
@@ -83,7 +84,7 @@ if(isset($_GET['surah']) && isset($_GET['ayat'])){
                                 <?php } ?>
                             </div>
                             <br>
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="submit" name="update" class="btn btn-primary">Kemaskini</button>
 
                         </form>
 
@@ -124,6 +125,20 @@ if(isset($_GET['surah']) && isset($_GET['ayat'])){
 
         </div>
     </div>
+
+<?php
+    if(isset($_POST['update']))
+    {
+        $sql = "UPDATE texts SET malay =  '$_POST[malay]' WHERE ayat_num = $_POST[ayat] AND surah_id = $_POST[surah]";
+        if (mysqli_query($db, $sql)) {
+            echo "<script>alert('Ayat telah dikemaskini.');window.location='kemaskini-surah.php?surah=$_POST[surah]&ayat=$_POST[ayat]'</script>";
+        } else {
+            echo "<script>alert('Gagal mengemaskini ayat');window.location='kemaskini-surah.php?surah=$_POST[surah]&ayat=$_POST[ayat]'</script>";
+
+        }
+    }
+
+?>
 
 
     <!-- END MAIN CONTENT -->
