@@ -12,15 +12,16 @@
 
 
         $surah_name = "TIADA";
-        $check_surah = "SELECT * FROM DaftarSurat WHERE surat_malaysia='$_GET[surah]'";
+        $check_surah = "SELECT * FROM surah WHERE malay_title='$_GET[surah]'";
         $fetch_surah = mysqli_query($db,$check_surah);
 
         if ($fetch_surah) {
 
             $data = mysqli_fetch_assoc($fetch_surah);
+            $surah_id = $data['id'];
 
             //get total page
-            $page =mysqli_num_rows(mysqli_query($db,"SELECT * FROM ArabicQuran WHERE surat='$data[index]'"));
+            $page =mysqli_num_rows(mysqli_query($db,"SELECT * FROM texts WHERE surah_id=$surah_id"));
             //divide by 12 because 2 pages contain 12 ayat
 
             $ttl_page = $page/12;
@@ -33,7 +34,7 @@
             $last_page = (int)$ttl_page;
 //            print_r($last_page);
 //            die();
-            $surah_name = $data['surat_arab'].'('.$data['surat_malaysia'].')';
+            $surah_name = $data['arabic_title'].'('.$data['malay_title'].')';
         }else{
 
             echo '<script>alert("Surah tidak wujud!");window.location="muka-depan.php"</script>';
@@ -132,18 +133,18 @@
 
 
                                 <?php
-                                $get_ayat = mysqli_query($db,"SELECT a.text as ayatArab,b.text as ayatMalay FROM ArabicQuran as a LEFT JOIN MalaysianQuran as b on a.surat = b.surat WHERE a.surat='$data[index]' LIMIT 6 OFFSET ".$limitPageA);
+                                $geTextsA = mysqli_query($db,"SELECT * FROM texts as a WHERE a.surah_id = $surah_id LIMIT 6 OFFSET ".$limitPageA);
 
 
-                                while ($row = mysqli_fetch_assoc($get_ayat))
+                                while ($rowA = mysqli_fetch_assoc($geTextsA))
                                 {
                                     ?>
                                     <p class="some-intro">
-                                    <h4 style="color: black;font-size: 20px"><?php echo $row['ayatArab']; ?></h4>
-                                    <small><?php echo $row['ayatMalay']; ?></small>
+                                    <h4 style="color: black;font-size: 20px"><?php echo $rowA['arabic']; ?></h4>
+                                    <small><?php echo $rowA['malay']; ?></small>
                                     </p>
                                     <audio controls>
-                                        <source src='track/1/surah_al_fatihah.mp3' type='audio/mp3'>
+                                        <source src='track/1/1.mp3' type='audio/mp3'>
                                         Your browser does not support the audio tag.
                                     </audio>
 
@@ -161,17 +162,21 @@
                             <div class="container">
 
                                 <?php
-                                $get_ayat = mysqli_query($db,"SELECT a.text as ayatArab,b.text as ayatMalay FROM ArabicQuran as a LEFT JOIN MalaysianQuran as b on a.surat = b.surat WHERE a.surat='$data[index]' LIMIT 6 OFFSET ".$limitPageB);
+                                $geTextsB = mysqli_query($db,"SELECT * FROM texts as a WHERE a.surah_id = $surah_id LIMIT 6 OFFSET ".$limitPageB);
 
 
-                                while ($row = mysqli_fetch_assoc($get_ayat))
+                                while ($rowB = mysqli_fetch_assoc($geTextsB))
                                 {
                                     ?>
                                     <p class="some-intro">
-                                    <h4 style="color: black;font-size: 20px"><?php echo $row['ayatArab']; ?></h4>
-                                    <small><?php echo $row['ayatMalay']; ?></small>
+                                    <h4 style="color: black;font-size: 20px"><?php echo $rowB['arabic']; ?></h4>
+                                    <small><?php echo $rowB['malay']; ?></small>
                                     </p>
-                                    <button><i class="fa fa-play">Play</i> </button>
+                                    <audio controls>
+                                        <source src='track/1/1.mp3' type='audio/mp3'>
+                                        Your browser does not support the audio tag.
+                                    </audio>
+
                                     <div class="content-title title-3"></div>
                                     <?php
                                 }

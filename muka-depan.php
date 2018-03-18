@@ -94,19 +94,19 @@
                                 <ul class="book-timeline">
                                     <?php
 
-                                        $get_surah = mysqli_query($db,"SELECT * FROM DaftarSurat LIMIT 6 OFFSET ".$limitPageA);
+                                        $get_surah = mysqli_query($db,"SELECT * FROM surah LIMIT 6 OFFSET ".$limitPageA);
 
 
                                         while ($row = mysqli_fetch_assoc($get_surah))
                                         {
                                             ?>
                                             <li>
-                                                <a  href="baca.php?surah=<?php echo $row['surat_malaysia']; ?>" class="time-data"><i class="fa fa-play"></i></a>
+                                                <a  href="baca.php?surah=<?php echo $row['malay_title']; ?>" class="time-data"><i class="fa fa-play"></i></a>
                                                 <div class="time-dot"></div>
                                                 <div class="time-block">
-                                                    <h4><?= $row['surat_arab'].'('.$row['surat_malaysia'].')'; ?></h4>
-                                                    <h5>Jumlah Ayat:<?= $row['jumlah_ayat'] ?></h5>
-                                                    <h5><?php echo $row['index']."-".$row['tempat_turun']; ?></h5>
+                                                    <h4><?= $row['arabic_title'].'('.$row['malay_title'].')'; ?></h4>
+                                                    <h5>Jumlah Ayat:<?= $row['total_text'] ?></h5>
+                                                    <h5><?php echo $row['id']."-".$row['tempat_turun']; ?></h5>
                                                 </div>
                                             </li>
                                     <?php
@@ -127,19 +127,19 @@
                                 <ul class="book-timeline">
                                     <?php
 
-                                    $get_surah = mysqli_query($db,"SELECT * FROM DaftarSurat LIMIT 6 OFFSET ".$limitPageB);
+                                    $get_surah = mysqli_query($db,"SELECT * FROM surah LIMIT 6 OFFSET ".$limitPageB);
 
 
                                     while ($row = mysqli_fetch_assoc($get_surah))
                                     {
                                         ?>
                                         <li>
-                                            <a  href="baca.php?surah=<?php echo $row['surat_malaysia']; ?>" class="time-data"><i class="fa fa-play"></i></a>
+                                            <a  href="baca.php?surah=<?php echo $row['malay_title']; ?>" class="time-data"><i class="fa fa-play"></i></a>
                                             <div class="time-dot"></div>
                                             <div class="time-block">
-                                                <h4><?php echo $row['surat_arab'].'('.$row['surat_malaysia'].')'; ?></h4>
+                                                <h4><?php echo $row['arabic_title'].'('.$row['malay_title'].')'; ?></h4>
                                                 <h5>Jumlah Ayat:<?= $row['jumlah_ayat'] ?></h5>
-                                                <h5><?php echo $row['index']."-".$row['tempat_turun']; ?></h5>
+                                                <h5><?php echo $row['id']."-".$row['tempat_turun']; ?></h5>
                                             </div>
                                         </li>
                                         <?php

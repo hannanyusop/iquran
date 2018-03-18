@@ -13,17 +13,14 @@
 if(isset($_GET['surah']) && isset($_GET['ayat'])){
 
     $surah_name = "TIADA";
-    $check_surah = "SELECT * FROM DaftarSurat as a 
-LEFT JOIN MalaysianQuran as c ON a.index=c.surat
-LEFT JOIN  ArabicQuran as b ON a.index=b.surat
-WHERE a.surat_malaysia='$_GET[surah]' AND b.ayat='$_GET[ayat]' AND c.ayat='$_GET[ayat]'";
+    $check_surah = "SELECT * FROM texts as a LEFT JOIN surah as b ON a.surah_id = b.id WHERE surah_id = $_GET[surah] AND ayat_num = $_GET[ayat]  ";
     $fetch_surah = mysqli_query($db,$check_surah);
 //    print_r($fetch_surah); die();
 
     if ($fetch_surah) {
 
         $data = mysqli_fetch_assoc($fetch_surah);
-        $surah_name = $data['surat_arab'].'('.$data['surat_malaysia'].')';
+        $title = $data['arabic_title'].'('.$data['malay_title'].')';
     }else{
 
         echo '<script>alert("Ayat tidak wujud!");window.location="lihat-surah.php?surah='.$_GET[surah].'"</script>';
@@ -58,43 +55,22 @@ WHERE a.surat_malaysia='$_GET[surah]' AND b.ayat='$_GET[ayat]' AND c.ayat='$_GET
                         <form id="basic-form" method="post">
 
                             <h2 class="heading"><i class="fa fa-square"></i>Arab</h2>
-                            <?php
-                            $arabic = mysqli_query($db,"SELECT * FROM ArabicQuran as a WHERE a.surat='$_GET[surah]' AND  a.ayat='$_GET[ayat]'");
-
-                            if ($arabic) {
-
-                                $arabic_data = mysqli_fetch_assoc($arabic);
-                            ?>
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="5" cols="30" disabled><?php echo $arabic_data['text']; ?></textarea>
+                                    <textarea class="form-control" rows="5" cols="30" disabled><?php echo $data['arabic']; ?></textarea>
                                 </div>
-                            <?php } ?>
-
                             <br>
                             <h2 class="heading"><i class="fa fa-square"></i>Terjemahan</h2>
-                            <?php
-                            $malay = mysqli_query($db,"SELECT * FROM MalaysianQuran as a WHERE a.surat='$_GET[surah]' AND  a.ayat='$_GET[ayat]'");
-
-                            if ($malay) {
-
-                                $malay_data = mysqli_fetch_assoc($malay);
-                                ?>
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="5" name="mal_quran" cols="30" required><?php echo $malay_data['text']; ?></textarea>
+                                    <textarea class="form-control" rows="5" name="mal_quran" cols="30" required><?php echo $data['malay']; ?></textarea>
                                 </div>
-                            <?php } ?>
-
                             <h2 class="heading"><i class="fa fa-square"></i>Audio</h2>
                             <div class="form-group">
                                 <?php
-                                $audio = mysqli_query($db,"SELECT * FROM track as a WHERE a.surat='$_GET[surah]' AND  a.ayat='$_GET[ayat]'");
-                                $audio_data = mysqli_fetch_assoc($audio);
-                                $audio_count = mysqli_num_rows ( $audio );
 
-                                if ($audio_count != 0 ) {
+                                if ($data['track'] != null || $data['track'] != '') {
                                     ?>
                                     <audio controls>
-                                        <source src='../../track/<?php echo "$audio_data[surat]/$audio_data[ayat].mp3"; ?>' type='audio/mp3'>
+                                        <source src='../../track/<?php echo "$data[surah_id]/$data[ayat_num].mp3"; ?>' type='audio/mp3'>
                                         Your browser does not support the audio tag.
                                     </audio>
                                 <?php }else { ?>

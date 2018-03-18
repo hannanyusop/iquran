@@ -79,10 +79,10 @@
                                             $tempat_turun = 'AND tempat_turun = "'.$_POST['tempat_turun'].'"';
                                         }
 
-                                        $get_surah = mysqli_query($db,"SELECT * FROM DaftarSurat WHERE surat_malaysia like '%$_POST[surah]%' $tempat_turun LIMIT 10");
+                                        $get_surah = mysqli_query($db,"SELECT * FROM surah WHERE malay_title like '%$_POST[surah]%' $tempat_turun LIMIT 10");
 
                                     }else{
-                                        $get_surah = mysqli_query($db,"SELECT * FROM DaftarSurat LIMIT 10");
+                                        $get_surah = mysqli_query($db,"SELECT * FROM surah LIMIT 10");
                                     }
 
 
@@ -90,10 +90,10 @@
                                     {
                                     ?>
                                     <tr>
-                                        <td><?= $row['index'] ?></td>
-                                        <td><a href="lihat-surah.php?surah=<?= $row['index']; ?>"><?= $row['surat_arab'].'('.$row['surat_malaysia'].')'; ?></a></td>
-                                        <td><?= $row['jumlah_ayat'] ?></td>
-                                        <td><?= $row['tempat_turun']; ?></td>
+                                        <td><?= $row['id'] ?></td>
+                                        <td><a href="lihat-surah.php?surah=<?= $row['id']; ?>"><?php echo $row['arabic_title'].'('.$row['malay_title'].')'; ?></a></td>
+                                        <td><?php echo $row['total_text'] ?></td>
+                                        <td><?php echo $row['tempat_turun']; ?></td>
                                         <td><span class="label label-success">AKTIF</span></td>
                                     </tr>
                                     <?php } ?>

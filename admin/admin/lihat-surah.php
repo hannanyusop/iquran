@@ -10,13 +10,14 @@ if(isset($_GET['surah'])){
 
 
     $surah_name = "TIADA";
-    $check_surah = "SELECT * FROM DaftarSurat WHERE surat_malaysia='$_GET[surah]'";
+    $check_surah = "SELECT * FROM surah WHERE id='$_GET[surah]'";
     $fetch_surah = mysqli_query($db,$check_surah);
 
     if ($fetch_surah) {
 
         $data = mysqli_fetch_assoc($fetch_surah);
-        $surah_name = $data['surat_arab'].'('.$data['surat_malaysia'].')';
+        $surah_id = $data['id'];
+        $surah_name = $data['arabic_title'].'('.$data['malay_title'].')';
     }else{
 
         echo '<script>alert("Surah tidak wujud!");window.location="pengurusan-surah.php"</script>';
@@ -85,16 +86,20 @@ if(isset($_GET['surah'])){
                                     </thead>
                                     <tbody>
                                     <?php
-                                    $get_ayat = mysqli_query($db,"SELECT * FROM ArabicQuran WHERE surat=".$_GET['surah']);
+                                    $get_ayat = mysqli_query($db,"SELECT * FROM texts where surah_id = $surah_id");
 
                                     while ($row = mysqli_fetch_assoc($get_ayat))
                                     {
                                         ?>
                                         <tr>
-                                            <td><?= $row['ayat'] ?></td>
-                                            <td><?= $row['text'] ?></td>
+                                            <td><?php echo $row['ayat_num'] ?></td>
+                                            <td><?php echo $row['arabic'] ?><br></br>
+                                                <small>
+                                                    <?php echo $row['malay'] ?>
+                                                </small>
+                                            </td>
                                             <td><button class="btn btn-xs btn-info"><i class="fa fa-play">Main</i> </button></td>
-                                            <td><a href="kemaskini-surah.php?surah=<?php echo $_GET['surah']; ?>&ayat=<?php echo $row['index']; ?>"><i class="fa fa-edit">Kemaskini</i> </a></td>
+                                            <td><a href="kemaskini-surah.php?surah=<?php echo $surah_id; ?>&ayat=<?php echo $row['id']; ?>"><i class="fa fa-edit">Kemaskini</i> </a></td>
                                         </tr>
                                     <?php } ?>
                                     </tbody>
