@@ -18,12 +18,11 @@
         </div>
         <nav id="left-sidebar-nav" class="sidebar-nav">
             <ul id="main-menu" class="metismenu">
-                <li class="active"><a href="dashboard.php"><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
+                <li class="active"><a href="dashboard.php"><i class="lnr lnr-home"></i> <span>Dahsboard</span></a></li>
                 <li class="">
-                    <a href="#charts" class="has-arrow" aria-expanded="false"><i class="lnr lnr-chart-bars"></i> <span>Pengurusan Surah</span></a>
+                    <a href="#charts" class="has-arrow" aria-expanded="false"><i class="lnr lnr-chart-bars"></i> <span>Statistik</span></a>
                     <ul aria-expanded="true">
-                        <li class=""><a href="charts-chartist.html">Meng</a></li>
-                        <li class=""><a href="charts-sparkline.html">Sparkline Chart</a></li>
+                        <li class=""><a href="statistik-keseluruhan.php">Kesluruhan</a></li>
                     </ul>
                 </li>
                 <li class=""><a href="pengurusan-surah.php"><i class="lnr lnr-alarm"></i> <span>Pengurusan Surah</span> <span class="badge bg-danger">15</span></a></li>

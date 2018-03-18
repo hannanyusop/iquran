@@ -4,6 +4,7 @@
 
 <head>
     <?php include_once ('config/database.php'); ?>
+    <?php include_once ('tracker.php'); ?>
     <?php $title = "SURAH:".$_GET['surah']; ?>
 
     <?php

@@ -20,45 +20,50 @@
 				<!-- WEBSITE ANALYTICS -->
 				<div class="dashboard-section">
 					<div class="section-heading clearfix">
-						<h2 class="section-title"><i class="fa fa-pie-chart"></i> Website Analytics</h2>
-						<a href="#" class="right">View Full Analytics Reports</a>
+						<h2 class="section-title"><i class="fa fa-pie-chart"></i>Dahsboard</h2>
+						<a href="statistik-keseluruhan.php" class="right">Lihat Statistik sepenuhanya</a>
 					</div>
 					<div class="panel-content">
 						<div class="row">
 							<div class="col-md-3 col-sm-6">
 								<div class="number-chart">
-									<div class="mini-stat">
-										<div id="number-chart1" class="inlinesparkline">23,65,89,32,67,38,63,12,34,22</div>
-										<p class="text-muted"><i class="fa fa-caret-up text-success"></i> 19% compared to last week</p>
-									</div>
-									<div class="number"><span>$22,500</span> <span>EARNINGS</span></div>
+									<div class="number">
+                                        <span>
+                                            <?php echo mysqli_num_rows(mysqli_query($db,"SELECT id FROM statistics WHERE DATE_FORMAT(datetime, '%Y-%m-%d') = '".date('Y-m-d')."' ")); ?>
+                                        </span>
+                                        <span>HARI INI</span>
+                                    </div>
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-6">
 								<div class="number-chart">
-									<div class="mini-stat">
-										<div id="number-chart2" class="inlinesparkline">77,44,10,80,88,87,19,59,83,88</div>
-										<p class="text-muted"><i class="fa fa-caret-up text-success"></i> 24% compared to last week</p>
-									</div>
-									<div class="number"><span>245</span> <span>SALES</span></div>
+									<div class="number">
+                                        <span>
+                                            <span>
+                                            <?php echo mysqli_num_rows(mysqli_query($db,"SELECT id FROM statistics WHERE DATE_FORMAT(datetime, '%Y-%m-%d') = '".strtotime('-1 day', strtotime(date('Y-m-d')))."' ")); ?>
+                                        </span>
+                                        </span>
+                                        <span>SEMALAM</span>
+                                    </div>
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-6">
 								<div class="number-chart">
-									<div class="mini-stat">
-										<div id="number-chart3" class="inlinesparkline">99,86,31,72,62,94,50,18,74,18</div>
-										<p class="text-muted"><i class="fa fa-caret-up text-success"></i> 44% compared to last week</p>
-									</div>
-									<div class="number"><span>561,724</span> <span>VISITS</span></div>
+									<div class="number">
+                                        <span>
+                                        <?php echo mysqli_num_rows(mysqli_query($db,"SELECT id FROM statistics WHERE DATE_FORMAT(datetime, '%Y-%m') = '".date('Y-m')."' ")); ?>
+                                        </span>
+                                        <span>BULAN INI</span>
+                                    </div>
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-6">
 								<div class="number-chart">
-									<div class="mini-stat">
-										<div id="number-chart4" class="inlinesparkline">28,44,70,21,86,54,90,25,83,42</div>
-										<p class="text-muted"><i class="fa fa-caret-down text-danger"></i> 6% compared to last week</p>
-									</div>
-									<div class="number"><span>372,500</span> <span>LIKES</span></div>
+									<div class="number">
+                                        <span>
+                                            <?php echo mysqli_num_rows(mysqli_query($db,"SELECT id FROM statistics")); ?>
+                                        </span>
+                                        <span>JUMLAH</span></div>
 								</div>
 							</div>
 						</div>
