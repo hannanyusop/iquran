@@ -8,6 +8,36 @@
         'Mekkah' => 'MEKKAH',
         'Madinah' => 'MADINAH'
     ];
+
+    if(empty($_GET['page'])){
+        echo "<script>window.location='pengurusan-surah.php?page=1';</script>";
+    }
+
+    if(isset($_POST['cari'])){
+
+
+        if($_POST['tempat_turun'] == "Semua"){
+            $tempat_turun = "";
+        }else{
+            $tempat_turun = 'AND tempat_turun = "'.$_POST['tempat_turun'].'"';
+        }
+        $query = "SELECT * FROM surah WHERE malay_title like '%$_POST[surah]%' $tempat_turun. ";
+    }else{
+        $query = "SELECT * FROM surah";
+    }
+
+
+    $current_page = $_GET['page'];
+    $page =mysqli_num_rows(mysqli_query($db,$query));
+    $ttl_page = $page/10;
+    if(is_float ( $ttl_page)){$ttl_page+=1;}
+    $last_page = (int)$ttl_page;
+
+    //pagination
+    $offset = ($current_page-1)*10;
+    $sql = $query." LIMIT 10 OFFSET ".$offset;
+    $get_surah = mysqli_query($db, $sql);
+
 ?>
 
 <body>
@@ -37,7 +67,7 @@
                     <div class="col-md-3">
                         <div class="panel-content">
                             <h2 class="heading"><i class="fa fa-search"></i> Carian</h2>
-                            <form method="post" action="pengurusan-surah.php">
+                            <form method="post" action="pengurusan-surah.php?page=1">
                                 <div class="form-group">
                                     <label>Nama Surah</label>
                                     <input type="text"  name="surah" value="<?php if(isset($_POST['surah'])) { echo $_POST['surah']; } ?>" class="form-control">
@@ -71,20 +101,6 @@
                                     <tbody>
                                     <?php
 
-                                    if(isset($_POST['cari'])){
-
-                                        if($_POST['tempat_turun'] == "Semua"){
-                                            $tempat_turun = "";
-                                        }else{
-                                            $tempat_turun = 'AND tempat_turun = "'.$_POST['tempat_turun'].'"';
-                                        }
-
-                                        $get_surah = mysqli_query($db,"SELECT * FROM surah WHERE malay_title like '%$_POST[surah]%' $tempat_turun LIMIT 10");
-
-                                    }else{
-                                        $get_surah = mysqli_query($db,"SELECT * FROM surah LIMIT 10");
-                                    }
-
 
                                     while ($row = mysqli_fetch_assoc($get_surah))
                                     {
@@ -102,11 +118,9 @@
 
                                 <ul class="pagination pagination-sm">
                                     <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i><span class="sr-only">Previous</span></a></li>
-                                    <li class="active"><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
+                                    <?php for($i = 1; $i < $last_page; $i++){ ?>
+                                    <li><a href="pengurusan-surah.php?page=<?php echo $i; ?>" <?php if($i === $current_page) { echo "class='active'"; }?>><?php echo $i; ?></a></li>
+                                    <?php } ?>
                                     <li><a href="#"><i class="fa fa-angle-right"></i><span class="sr-only">Next</span></a></li>
                                 </ul>
 

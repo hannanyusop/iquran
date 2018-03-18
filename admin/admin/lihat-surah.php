@@ -8,6 +8,11 @@
 //check if surah exist
 if(isset($_GET['surah'])){
 
+    if(empty($_GET['page'])){
+        echo "<script>window.location='lihat-surah.php?surah=$_GET[surah]&page=1';</script>";
+    }
+
+
 
     $surah_name = "TIADA";
     $check_surah = "SELECT * FROM surah WHERE id='$_GET[surah]'";
@@ -15,9 +20,23 @@ if(isset($_GET['surah'])){
 
     if ($fetch_surah) {
 
+
         $data = mysqli_fetch_assoc($fetch_surah);
         $surah_id = $data['id'];
         $surah_name = $data['arabic_title'].'('.$data['malay_title'].')';
+
+        $current_page = $_GET['page'];
+        $query = "SELECT * FROM texts where surah_id = $surah_id";
+        $page = mysqli_num_rows(mysqli_query($db,$query));
+        $ttl_page = $page/10;
+        if(is_float ( $ttl_page)){$ttl_page+=1;}
+        $last_page = (int)$ttl_page;
+
+        //pagination
+        $offset = ($current_page-1)*10;
+        $sql = "SELECT * FROM texts where surah_id = $surah_id LIMIT 10 OFFSET ".$offset;
+        $get_ayat = mysqli_query($db, $sql);
+
     }else{
 
         echo '<script>alert("Surah tidak wujud!");window.location="pengurusan-surah.php"</script>';
@@ -86,7 +105,6 @@ if(isset($_GET['surah'])){
                                     </thead>
                                     <tbody>
                                     <?php
-                                    $get_ayat = mysqli_query($db,"SELECT * FROM texts where surah_id = $surah_id");
 
                                     while ($row = mysqli_fetch_assoc($get_ayat))
                                     {
@@ -105,15 +123,15 @@ if(isset($_GET['surah'])){
                                     </tbody>
                                 </table>
 
+                                <?php if($last_page > 1){ ?>
                                 <ul class="pagination pagination-sm">
                                     <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i><span class="sr-only">Previous</span></a></li>
-                                    <li class="active"><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
+                                    <?php for($i = 1; $i < $last_page; $i++){ ?>
+                                        <li><a href="lihat-surah.php?surah=<?php echo $surah_id; ?>&page=<?php echo $i; ?>" <?php if($i === $current_page) { echo "class='active'"; }?>><?php echo $i; ?></a></li>
+                                    <?php } ?>
                                     <li><a href="#"><i class="fa fa-angle-right"></i><span class="sr-only">Next</span></a></li>
                                 </ul>
+                                <?php } ?>
 
                             </div>
                         </div>
